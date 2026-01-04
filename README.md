@@ -1,6 +1,6 @@
 <div align="center">
 
-![Header](https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20,24,30&height=200&section=header&text=AI-Powered%20Code%20Reviewer&fontSize=50&fontColor=fff&animation=fadeIn&fontAlignY=38&desc=Intelligent%20Code%20Review%20System%20Built%20with%20MERN%20Stack&descAlignY=55&descAlign=50)
+![Header](https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20,24,30&height=200&section=header&text=AI-Powered%20Code%20Reviewer&fontSize=50&fontColor=fff&animation=fadeIn&fontAlignY=38)
 
 <h3>
   <span style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
