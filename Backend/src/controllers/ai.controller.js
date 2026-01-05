@@ -8,4 +8,6 @@ module.exports.getResponse = async (req, res) => {
     return res.status(400).send("Prompt is required");
   }
   const response = await aiService(prompt);
+
+  res.send(response);
 };

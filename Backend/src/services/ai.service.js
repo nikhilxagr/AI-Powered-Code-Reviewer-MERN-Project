@@ -1,13 +1,16 @@
 const { GoogleGenAI } = require("@google/genai");
 
-const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GEMINI_KEY });
+const ai = new GoogleGenAI({
+  apiKey: process.env.GOOGLE_GEMINI_KEY,
+});
 
-async function main() {
+async function aiService(prompt) {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
-    contents: "Explain how AI works in a few words",
+    contents: prompt,
   });
-  console.log(response.text);
+
+  return response.text;
 }
 
-main();
+module.exports = aiService;
