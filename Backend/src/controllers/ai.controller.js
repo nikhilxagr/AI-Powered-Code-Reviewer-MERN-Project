@@ -2,16 +2,16 @@ const aiService = require("../services/ai.service");
 
 module.exports.getReview = async (req, res) => {
   try {
-    const code = req.body.code;
+    const { code } = req.body;
 
-    if (!code) {
-      return res.status(400).json({ error: "code is required" });
+    if (!code || !code.trim()) {
+      return res.send("⚠️ Please provide code to review.");
     }
 
-    const response = await aiService(code);
-    res.json({ review: response });
+    const review = await aiService(code);
+    res.send(review); //  SEND MARKDOWN
   } catch (error) {
-    console.error("Controller Error:", error.message);
-    res.status(500).json({ error: "AI review failed" });
+    console.error("AI Error:", error.message);
+    res.send("❌ AI review failed. Please try again.");
   }
 };

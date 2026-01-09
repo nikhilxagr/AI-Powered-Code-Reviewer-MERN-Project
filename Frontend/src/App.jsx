@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
-import "prismjs/themes/prism-tomorrow.css";
 import Editor from "react-simple-code-editor";
 import prism from "prismjs";
-import "./App.css";
+import "prismjs/themes/prism-tomorrow.css";
 import axios from "axios";
 import Markdown from "react-markdown";
+import "./App.css";
 
 function App() {
-  const [code, setCode] = useState(`function sum() {
-  return 3 + 5;
-}`);
-
+  const [code, setCode] = useState("");
   const [review, setReview] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -25,46 +22,58 @@ function App() {
 
       const response = await axios.post(
         "http://localhost:3000/api/ai/get-review",
-        { code }
+        { code },
+        { headers: { "Content-Type": "application/json" } }
       );
 
-      setReview(response.data.review);
-    } catch (error) {
-      console.error(error);
-      setReview("❌ Failed to get AI review. Check backend.");
+      setReview(response.data);
+    } catch (err) {
+      setReview("❌ Failed to get review. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
+  function copyFixedCode() {
+    const match = review.match(/```[\s\S]*?```/);
+    if (!match) return;
+
+    const codeOnly = match[0].replace(/```/g, "");
+    navigator.clipboard.writeText(codeOnly);
+    alert("✅ Fixed code copied!");
+  }
+
   return (
-    <main>
-      <div className="left">
-        <div className="code">
-          <Editor
-            value={code}
-            onValueChange={setCode}
-            highlight={(code) =>
-              prism.highlight(code, prism.languages.js, "js")
-            }
-            padding={10}
-            style={{
-              fontFamily: '"Fira Code", monospace',
-              fontSize: 16,
-              height: "100%",
-              width: "100%",
-            }}
-          />
+    <main className="app">
+      <section className="editor-panel">
+        <div className="editor-header">
+          <h2>Code Editor</h2>
         </div>
 
-        <div className="review" onClick={reviewCode}>
-          {loading ? "Reviewing..." : "Review"}
-        </div>
-      </div>
+        <Editor
+          value={code}
+          onValueChange={setCode}
+          highlight={(code) => prism.highlight(code, prism.languages.js, "js")}
+          padding={14}
+          placeholder="Paste your code here..."
+          className="editor"
+        />
 
-      <div className="right">
-        <Markdown>{review}</Markdown>
-      </div>
+        <button className="review-btn" onClick={reviewCode}>
+          {loading ? "Reviewing..." : "Review Code"}
+        </button>
+      </section>
+
+      <section className="review-panel">
+        <div className="review-header">
+          <h2>AI Review</h2>
+          <button onClick={copyFixedCode}>📋 Copy Fixed Code</button>
+        </div>
+
+        <div className="review-content">
+          <Markdown>{review}</Markdown>
+        </div>
+      </section>
     </main>
   );
 }
