@@ -4,14 +4,14 @@ module.exports.getReview = async (req, res) => {
   try {
     const { code } = req.body;
 
-    if (!code || !code.trim()) {
-      return res.send("⚠️ Please provide code to review.");
+    if (typeof code !== "string" || !code.trim()) {
+      return res.status(400).send("Please provide code to review.");
     }
 
     const review = await aiService(code);
-    res.send(review); //  SEND MARKDOWN
+    return res.send(review);
   } catch (error) {
-    console.error("AI Error:", error.message);
-    res.send("❌ AI review failed. Please try again.");
+    console.error("AI Error:", error);
+    return res.status(500).send("AI review failed. Please try again.");
   }
 };

@@ -1,18 +1,16 @@
-const express = require('express');
-const aiRoutes = require('./routes/ai.routes');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
+const aiRoutes = require("./routes/ai.routes");
 
 const app = express();
 
-
 app.use(cors());
-
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.json(aiResponse);
-
+app.get("/", (_req, res) => {
+  res.json({ message: "AI Code Reviewer backend is running." });
 });
 
-app.use('/api/ai', aiRoutes);
+app.use("/api/ai", aiRoutes);
+
 module.exports = app;
